@@ -444,6 +444,26 @@ olsr_input_hna(union olsr_message *m, struct interface *in_if __attribute__ ((un
     pkt_get_ipaddress(&curr, &mask);
     prefix.prefix_len = olsr_netmask_to_prefix(&mask);
 
+#ifdef HNA_FILTER_HACK
+    if (is_prefix_inetgw(&prefix)) {
+        hnasize -= 2 * olsr_cnf->ipsize;
+        if (0 < hnasize) {
+            uint8_t *dest = curr - 2 * olsr_cnf->ipsize;
+            memmove(dest, curr, curr_end - curr);
+            curr_end -= 2 * olsr_cnf->ipsize;
+            curr = dest;
+            if (olsr_cnf->ip_version == AF_INET) {
+                m->v4.olsr_msgsize -= 2 * olsr_cnf->ipsize;
+            }
+            else {
+                m->v6.olsr_msgsize -= 2 * olsr_cnf->ipsize;
+            }
+            continue;
+        }
+        return false;
+    }
+#endif
+
 #ifdef LINUX_NETLINK_ROUTING
     if (olsr_cnf->smart_gw_active && olsr_is_smart_gateway(&prefix, &mask)) {
       olsr_update_gateway_entry(&originator, &mask, prefix.prefix_len, msg_seq_number);

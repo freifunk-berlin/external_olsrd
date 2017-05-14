@@ -197,6 +197,10 @@ ifeq ($(NO_DEBUG_MESSAGES),1)
 CPPFLAGS +=	-DNODEBUG
 endif
 
+ifeq ($(HNA_FILTER_HACK),1)
+CPPFLAGS +=	-DHNA_FILTER_HACK
+endif
+
 # a make function to quote "/" and "."
 quote = $(subst .,\.,$(subst /,\/,$1))
 
