@@ -391,7 +391,6 @@ olsr_forward_message(union olsr_message *m, struct interface *in_if, union olsr_
 
         if (net_outbuffer_push(ifn, m, msgsize) != msgsize) {
           OLSR_PRINTF(1, "Received message to big to be forwarded in %s(%d bytes)!", ifn->int_name, msgsize);
-          olsr_syslog(OLSR_LOG_ERR, "Received message to big to be forwarded on %s(%d bytes)!", ifn->int_name, msgsize);
         }
       }
     } else {
@@ -400,7 +399,6 @@ olsr_forward_message(union olsr_message *m, struct interface *in_if, union olsr_
 
       if (net_outbuffer_push(ifn, m, msgsize) != msgsize) {
         OLSR_PRINTF(1, "Received message to big to be forwarded in %s(%d bytes)!", ifn->int_name, msgsize);
-        olsr_syslog(OLSR_LOG_ERR, "Received message to big to be forwarded on %s(%d bytes)!", ifn->int_name, msgsize);
       }
     }
   }
