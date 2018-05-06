@@ -62,7 +62,7 @@ endif
 SWITCHDIR =	src/olsr_switch
 CFGDIR =	src/cfgparser
 include $(CFGDIR)/local.mk
-TAG_SRCS =	$(SRCS) $(HDRS) $(wildcard $(CFGDIR)/*.[ch] $(SWITCHDIR)/*.[ch])
+TAG_SRCS =	$(SRCS) $(HDRS) $(sort $(wildcard $(CFGDIR)/*.[ch] $(SWITCHDIR)/*.[ch]))
 
 SGW_SUPPORT = 0
 ifeq ($(OS),linux)
@@ -89,7 +89,7 @@ $(EXENAME):	$(OBJS) $(ANDROIDREGEX) src/builddata.o
 ifeq ($(VERBOSE),0)
 		@echo "[LD] $@"
 endif
-		$(MAKECMDPREFIX)$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+		$(MAKECMDPREFIX)$(CC) $(LDFLAGS) -lm -o $@ $^ $(LIBS)
 
 cfgparser:	$(CFGDEPS) src/builddata.o
 		$(MAKECMDPREFIX)$(MAKECMD) -C $(CFGDIR)
@@ -240,9 +240,9 @@ ifeq ($(OS),win32)
 SUBDIRS := dot_draw httpinfo info jsoninfo mini netjson pgraph secure txtinfo
 else
 ifeq ($(OS),android)
-SUBDIRS := arprefresh bmf dot_draw drophna dyn_gw dyn_gw_plain httpinfo info jsoninfo mdns mini nameservice netjson p2pd pgraph secure sgwdynspeed txtinfo watchdog
+SUBDIRS := arprefresh bmf dot_draw dyn_gw dyn_gw_plain httpinfo info jsoninfo mdns mini nameservice netjson p2pd pgraph secure sgwdynspeed txtinfo watchdog
 else
-SUBDIRS := dot_draw drophna httpinfo info jsoninfo mini nameservice netjson pgraph secure txtinfo watchdog
+SUBDIRS := dot_draw httpinfo info jsoninfo mini nameservice netjson pgraph secure txtinfo watchdog
 endif
 endif
 endif
@@ -324,7 +324,6 @@ drophna_install:
 
 drophna_uninstall:
 	                $(MAKECMDPREFIX)$(MAKECMD) -C lib/drophna DESTDIR=$(DESTDIR) uninstall
-
 
 dyn_gw:
 		$(MAKECMDPREFIX)$(MAKECMD) -C lib/dyn_gw
@@ -450,6 +449,18 @@ netjson_install: info_install
 
 netjson_uninstall: info_uninstall
 		$(MAKECMDPREFIX)$(MAKECMD) -C lib/netjson DESTDIR=$(DESTDIR) uninstall
+
+poprouting: info
+		$(MAKECMDPREFIX)$(MAKECMD) -C lib/poprouting
+
+poprouting_clean: info_clean
+		$(MAKECMDPREFIX)$(MAKECMD) -C lib/poprouting DESTDIR=$(DESTDIR) clean
+
+poprouting_install: info_install
+		$(MAKECMDPREFIX)$(MAKECMD) -C lib/poprouting DESTDIR=$(DESTDIR) install
+
+poprouting_uninstall: info_uninstall
+		$(MAKECMDPREFIX)$(MAKECMD) -C lib/poprouting DESTDIR=$(DESTDIR) uninstall
 
 p2pd:
 		$(MAKECMDPREFIX)$(MAKECMD) -C lib/p2pd
