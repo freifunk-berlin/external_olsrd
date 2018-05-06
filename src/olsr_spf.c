@@ -471,7 +471,7 @@ olsr_calculate_routing_table(bool force)
   for (; !list_is_empty(&path_list); list_remove(path_list.next)) {
 
     tc = pathlist2tc(path_list.next);
-    link = tc ? tc->next_hop : NULL;
+    link = tc->next_hop;
 
     if (!link) {
 #ifdef DEBUG

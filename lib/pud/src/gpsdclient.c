@@ -355,7 +355,6 @@ void nmeaInfoFromGpsd(struct gps_data_t *gpsdata, NmeaInfo *info, struct GpsdCon
   gpsdata->set &= ~STATUS_SET; /* always valid */
   if (gpsdata->status == STATUS_NO_FIX) {
     nmeaInfoClear(info);
-    nmeaTimeSet(&info->utc, &info->present, NULL);
     return;
   }
 
@@ -411,6 +410,13 @@ void nmeaInfoFromGpsd(struct gps_data_t *gpsdata, NmeaInfo *info, struct GpsdCon
   }
   nmeaInfoSetPresent(&info->present, NMEALIB_PRESENT_FIX | NMEALIB_PRESENT_SIG);
   gpsdata->set &= ~MODE_SET;
+
+  if ((info->fix == NMEALIB_FIX_BAD) //
+      || (info->sig == NMEALIB_SIG_INVALID)) {
+    nmeaInfoClear(info);
+    nmeaTimeSet(&info->utc, &info->present, NULL);
+    return;
+  }
 
   /* hdop */
   if (!isNaN(gpsdata->fix.epx) //

@@ -52,8 +52,6 @@ ifdef ADMIN_INTERFACE
 CPPFLAGS +=	-DADMIN_INTERFACE
 endif
 
-LDFLAGS += -lm
-
 OBJS += $(TOPDIR)/src/cfgparser/cfgfile_gen.o
 
 default_target: $(PLUGIN_FULLNAME)

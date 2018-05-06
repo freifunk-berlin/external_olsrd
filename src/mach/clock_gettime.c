@@ -45,8 +45,6 @@
 
 #include "clock_gettime.h"
 
-#ifndef CLOCK_MONOTONIC
-
 #include <err.h>
 #include <mach/clock.h>
 #include <mach/mach.h>
@@ -74,5 +72,3 @@ int clock_gettime(clockid_t clock_id, struct timespec *tp) {
 
   return retval;
 }
-
-#endif /* CLOCK_MONOTONIC */

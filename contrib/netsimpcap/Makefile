@@ -41,7 +41,7 @@
 # the copyright holders.
 #
 
-SRC +=	$(sort $(wildcard ./src/*.c))
+SRC +=	$(wildcard ./src/*.c)
 
 OBJS = $(SRC:.c=.o)
 

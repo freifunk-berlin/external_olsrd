@@ -152,7 +152,6 @@ olsr_plugin_exit(void)
     close(outbuffer_socket);
     abuf_free(&outbuffer);
     olsr_stop_timer(writetimer_entry);
-    writetimer_entry = NULL;
   }
   if (ipc_socket != -1) {
     CLOSE(ipc_socket);

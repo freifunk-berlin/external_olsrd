@@ -98,8 +98,7 @@ const char *GW_UPLINK_TXT[] = {
 
 const char *OLSR_IF_MODE[] = {
   "mesh",
-  "ether",
-  "silent"
+  "ether"
 };
 
 int current_line;
